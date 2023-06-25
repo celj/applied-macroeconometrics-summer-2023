@@ -2,7 +2,9 @@
 
 File structure:
 
-```
+```sh
+tree
+
 .
 ├── README.md             <- this file
 ├── chord.m               <- chord method function
