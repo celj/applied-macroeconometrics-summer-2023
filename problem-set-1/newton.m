@@ -1,12 +1,17 @@
 function [iters, sols, errors] = newton(fun, x0, tol, kmax)
+% Arguments:
+% fun: function to find root of
+% x0: initial guess
+% tol: tolerance
+% kmax: maximum number of iterations
 
+error = tol + 1;
 k = 0;
 x = x0;
-error = tol + 1;
 
+errors = zeros(1, kmax);
 iters = zeros(1, kmax);
 sols = zeros(1, kmax);
-errors = zeros(1, kmax);
 
 while error > tol && k < kmax
     k = k + 1;
