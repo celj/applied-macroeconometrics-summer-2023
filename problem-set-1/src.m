@@ -2,7 +2,7 @@
 % Applied Macroeconometrics
 % ITAM
 % Summer 2023
-% Written by Carlos Leddfama
+% Written by Carlos Lezama
 
 setup;
 
