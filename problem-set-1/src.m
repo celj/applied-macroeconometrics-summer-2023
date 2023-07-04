@@ -4,6 +4,8 @@
 % Summer 2023
 % Written by Carlos Lezama
 
+tic
+
 setup;
 
 nonlinear_ex;
@@ -31,3 +33,5 @@ labor_ex;
 % Additionally, the gross flows measure the movement of people between the states.
 % Thus, f^UE stands for the flow of people from employment to unemployment;
 % therefore, we consider it to calculate the unemployment rate.
+
+toc
