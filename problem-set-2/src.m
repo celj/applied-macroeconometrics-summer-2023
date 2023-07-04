@@ -10,8 +10,8 @@ setup;
 
 % bootstrapping_ex;
 
-% discretization_ex;
+discretization_ex;
 
-transformation_ex;
+% transformation_ex;
 
 toc
