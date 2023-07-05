@@ -8,10 +8,10 @@ tic
 
 setup;
 
-bootstrapping_ex;
+ex1;
 
-discretization_ex;
+ex2;
 
-transformation_ex;
+ex3;
 
 toc

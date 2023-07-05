@@ -1,7 +1,7 @@
 tol = 1e-6;
 kmax = 1e4;
 
-data = readtable('data/LM_grossflows.xls');
+data = readtable('LM_grossflows.xls');
 data(any(ismissing(data), 2), :) = [];
 
 data.a = data.flowsEU;

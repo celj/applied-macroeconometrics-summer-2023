@@ -1,6 +1,6 @@
 tic
 
-data = readmatrix('data/passthrough.xlsx','Sheet','base','Range','B28:C207');
+data = readmatrix('passthrough.xlsx','Sheet','base','Range','B28:C207');
 
 cpi = data(:,1);
 exr = data(:,2);
