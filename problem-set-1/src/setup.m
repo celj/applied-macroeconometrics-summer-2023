@@ -2,7 +2,8 @@ clc;
 clear all;
 close all;
 
-set(groot, 'defaultfigureposition', [400 250 900 750])
+set(groot, 'defaultfigureunits', 'normalized');
+set(groot, 'defaultfigureposition', [0.15 0.15 0.7 0.7]);
 
 set(groot, 'DefaultAxesTickLabelInterpreter', 'latex');
 set(groot, 'DefaultLegendInterpreter', 'latex');
