@@ -1,13 +1,8 @@
+global A alpha beta delta eta grid_size k0 phi theta rho T
+
 T = 1e4;
 
 grid_size = 250;
-
-kmin = 0.01;
-kmax = 5;
-
-k_grid = linspace(kmin, kmax, grid_size)';
-
-global A alpha beta delta eta theta rho
 
 A = 1; % total factor productivity
 alpha = 0.3; % capital share
@@ -15,12 +10,16 @@ beta = 0.95; % discount factor
 delta = 1; % depreciation rate
 eta = 1; % relative risk aversion
 k0 = 1.0120; % initial capital stock
-theta = 0.6; % utility weight on leisure
 
 rho = (1 / beta) - 1;
 
 kss = ((alpha * A) / (rho + delta)) ^ (1 / (1 - alpha));
 css = prodfunc(kss) - delta * kss;
+
+kmin = 0.5 * kss;
+kmax = 1.5 * kss;
+
+k_grid = linspace(kmin, kmax, grid_size)';
 
 [it,vf,p] = vi(k_grid);
 
@@ -77,5 +76,5 @@ c_agg = sum(beta .^ (1:length(c_positive))' .* log(c_positive)); % ignores the f
 
 fprintf('The initial value of the value function is %f.\n',v0);
 fprintf('The aggregate consumption under the optimal plan is %f.\n',c_agg);
-fprintf('The difference between the two is %f.\n',abs(v0 - c_agg));
+fprintf('The difference between them is %f.\n',abs(v0 - c_agg));
 % which is very close to zero, as expected

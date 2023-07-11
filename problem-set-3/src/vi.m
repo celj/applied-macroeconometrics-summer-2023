@@ -20,7 +20,7 @@ function [it,vf,p] = vi(k_grid)
 %           prodfunc.m
 %
 
-global A alpha beta delta eta
+global beta
 
 ngrid = length(k_grid);
 
@@ -30,7 +30,7 @@ ngrid = length(k_grid);
 
 v0 = retrn(k_grid,k_grid) / (1 - beta);
 crit = 1;
-tol = 10^-2;
+tol = 1e-2;
 
 it = 0;
 

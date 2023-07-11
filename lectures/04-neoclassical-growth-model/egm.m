@@ -1,72 +1,44 @@
-function [et,it,vf,p] = egm(k_grid)
-%%
-% EGM.M
-% Numerical methods course
-% Summer 2013
-% Written by Gustavo Leyva
-% University of Minnesota
-% Department of Economics
-% gustavo.leyva.jimenez@gmail.com
-% Created on 10.27.11
-% Modified on 07.10.13
-%
-% PURPOSE   Performs the basic value function iteration method using an
-%           endogenous grid method (by solving for the today's capital in the Euler
-%           equation). Notice that k_grid is the grid over the tomorrows' market
-%           resources (y = F(k)=c+k')
-% USAGE     [et,it,vf,p] = egm(k_grid)
-% INPUTS    k_grid  : capital grid (Nx1)
-% OUTPUTS   et      : elapsed time
-%           it      : number of iterations
-%           vf      : value function
-%           p       : today's capital
-% USES      retrn.m
-%           prodfunc.m
-%           fsys_k.m
-% NOTES     Remains to include the case delta = 1 (07.10.13)
-%
-global sig beta
+global vlast beta delta theta k0 kt alpha grid_size phi rho
 
-ngrid = length(k_grid);
-%--------------------------------------------------------------------------
-%Starting value function interation
-%--------------------------------------------------------------------------
-y_grid = prodfunc(k_grid);
-v0 = retrn_egm(y_grid,k_grid)/(1-beta);                                     % value function defined on y_grid/k_grid
+grid_size = 250;
+
+alpha = 0.3; % capital share
+beta = 0.95; % discount factor
+delta = 1; % depreciation rate
+theta = 0.6; % utility weight on leisure
+
+rho = (1 / beta) - 1;
+
+phi = (1 - theta) / theta;
+
+h=.5*ones(1,grid_size);
+k0=linspace(0.2, 10, grid_size);
+kt1=k0;
+vlast=ones(1,grid_size);
+
+xmax =[9.99 .99];
+xmin =[.21 .01];
+
+options = optimset('Display','off','LargeScale','off');
+
 crit = 1;
-tol = 10^-2;
+tol = 1e2;
 
-tic;
-it = 0;
-while crit > tol*(1-beta);
-    it = it + 1;
-    v1 = zeros(ngrid,1);
-    s = zeros(ngrid,1);
-    
-    for j = 1:ngrid;
-        s(j) = slope(k_grid,v0,k_grid(j));
+while crit > tol * (1 - beta)
+    for j = 1:grid_size
+        kt = k0(j);
+        z0 = [kt,h(j)];
+        z = fmincon(@valfun2,z0,[],[],[],[],xmin,xmax,[],options);
+        v(j) = -valfun2(z);
+        kt1(j) = z(1);
+        h(j) = z(2);
     end
-    c = (beta*s).^(-1/sig);
-    y = c + k_grid;                                                         % today's market resources
-    v1y = retrn_egm(y,k_grid) + beta*v0;                                    % updating the value function on y ('y endog')
-    for i = 1:ngrid;
-        v1(i) = pw_linear(y,v1y,y_grid(i));                                 % interpolation on y_grid
-    end;
-    
-    crit = max(abs(v1-v0));
-    v0 = v1;
+    crit = max(abs(vlast - v));
+    vlast = v;
 end
-toc;
-et = toc;
-%--------------------------------------------------------------------------
-% finding the today's k
-%--------------------------------------------------------------------------
-p = zeros(ngrid,1);
-for i = 1:ngrid;
-    k = fsolve(@(k) fsys_k(k,y(i)),0.01*y(i),optimset('MaxIter',50,'MaxFunEvals',50,'Display','Off','Algorithm','Levenberg-Marquardt'));
-    p(i) = k;
-end;
-%vfs = 1/(1-beta)*retrn_egm(y,k_grid);
-vf = v0;
 
-end
+figure;
+plot(k0,vlast);
+title('Model with labor choice');
+xlabel('$k_t$');
+ylabel('Value function');

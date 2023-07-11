@@ -13,3 +13,5 @@ ex1;
 ex2;
 
 toc;
+
+% Elapsed time is approximately 80 seconds on Apple Silicon M2 16GB.

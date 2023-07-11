@@ -19,7 +19,7 @@ function [u] = retrn(x,y)
 % USES      prodfunc.m
 %
 
-global A alpha delta eta
+global eta
 
 c = prodfunc(x) - y;
 
