@@ -1,4 +1,4 @@
-global A alpha beta delta eta grid_size k0 phi theta rho T
+global A alpha beta delta eta grid_size k0 rho T
 
 T = 1e4;
 
