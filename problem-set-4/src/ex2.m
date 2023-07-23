@@ -1,0 +1,9 @@
+alpha = 0.3;
+beta = 0.95;
+delta = 1;
+k_max = 5;
+k_min = 0.01;
+ngrid_k = 250;
+ngrid_z = 3;
+rho = 0.95;
+sigma_e = 0.01;

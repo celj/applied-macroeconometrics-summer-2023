@@ -1,53 +1,58 @@
-function [t1,f1] = golden2(xi,x,fx)
-%%
-% GOLDEN2.M
-% Numerical methods course
-% Summer 2013
-% Written by Gustavo Leyva
-% University of Minnesota
-% Department of Economics
-% gustavo.leyva.jimenez@gmail.com
-% Created on 06.21.13
-% Modified on 06.21.13
-%
-% PURPOSE   Performs a golden search optimization method for VI with
-%           quadratic interpolation
-% USAGE     [t1,f1] = golden2(xi,x,fx)
-% INPUTS    xi  : today's capital state value
-%           x   : indices on optimal capital
-%           fx  : values on rhs value function
-% OUTPUTS   t1  : solution
-%           f1  : value function
-%
-global beta
+tic;
 
-L = x(1);
-U = x(length(x));
-p = 0.5*(sqrt(5)-1);
-t1 = p*L + (1-p)*U;
-t2 = (1-p)*L + p*U;
-tol= 1e-8;
-c = coefs(x,fx);
-f1 = retrn(xi,t1) + beta*polyeval(c,x,t1);
-f2 = retrn(xi,t2) + beta*polyeval(c,x,t2);
+setup;
 
-it = 0;
-while abs(U-L) > tol*max([1;(abs(t1)+abs(t2))]);
-    
-    if f1 > f2;
-        U = t2;
-        t2 = t1;
-        f2 = f1;
-        t1 = p*L + (1-p)*U;
-        f1 = retrn(xi,t1) + beta*polyeval(c,x,t1);
-    else
-        L = t1;
-        t1 = t2;
-        f1 = f2;
-        t2 = (1-p)*L + p*U;
-        f2 = retrn(xi,t2) + beta*polyeval(c,x,t2);
-    end;
-    it = it+1;
-end;
+tol = 10^-5;
+crit = 100;
 
-end
+x0 = [1.2, 1.2];
+x1 = [-1.2, 1];
+
+[f, dfx] = func0(x0);
+
+[it0,sol0,err0] = newton(x0,tol,crit);
+[it1,sol1,err1] = newton(x1,tol,crit);
+
+[it2,sol2,err2] = chord(x0,tol,crit);
+[it3,sol3,err3] = chord(x1,tol,crit); % does not converge
+
+figure;
+semilogy(it0, err0, it1, err1);
+grid on;
+legend('Newton $x_0$', 'Newton $x_1$');
+title('$x_0 = (1.2, 1.2)$, $x_1 = (-1.2, 1)$');
+xlabel('Iterations');
+ylabel('Error');
+
+figure;
+semilogy(it2, err2);
+grid on;
+legend('Chord $x_0$');
+title('$x_0 = (1.2, 1.2)$');
+xlabel('Iterations');
+ylabel('Error');
+
+figure;
+hold on;
+plot(sol0(:,1), sol0(:,2));
+plot(sol1(:,1), sol1(:,2));
+plot(sol2(:,1), sol2(:,2));
+plot(1,1,'k.','MarkerSize',30);
+grid on;
+legend('Newton $x_0$', 'Newton $x_1$', 'Chord $x_0$','True solution');
+title('$x_0 = (1.2, 1.2)$, $x_1 = (-1.2, 1)$');
+xlabel('$x_1$');
+ylabel('$x_2$');
+hold off;
+
+ngrid = 50;
+rho = 0.9;
+sig_u = sqrt(0.06);
+sig_z = sqrt(sig_u^2 / (1 - rho^2));
+
+[grid0,p0] = rouwenhorst(rho,sig_u,ngrid);
+
+% sims = 250;
+
+% initial_state = 1;
+
