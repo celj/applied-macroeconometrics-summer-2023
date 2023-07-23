@@ -1,3 +1,5 @@
+warning('off','all');
+
 clc;
 clear all;
 close all;

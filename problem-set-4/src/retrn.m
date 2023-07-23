@@ -25,8 +25,5 @@ if sig == 1;
 else
     u = (1/(1-sig))*(c).^(1-sig);
 end;
+
 end
-
-
-
-

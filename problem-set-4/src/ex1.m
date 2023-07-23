@@ -12,8 +12,6 @@
 % PURPOSE   Compares the performance of several methods to solve for the
 %           deterministic neoclassical growth model
 %
-clear all
-clc;
 global alpha beta delta sig fac
 %--------------------------------------------------------------------------
 % Setting parameters
