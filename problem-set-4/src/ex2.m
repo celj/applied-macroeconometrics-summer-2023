@@ -51,7 +51,7 @@ while (termin == 0)
             for l=1:p % tomorrow's capital
                 aux(l) = u(i,j,l);
                 for m=1:q % tomorrow's productivity
-                    aux(l) = aux(l) + beta * p_z(j,m) * u(l,j,m);
+                    aux(l) = aux(l) + beta * p_z(j,m) * u(l,m,j);
                 end
             end
             [v(i,j),policy(i,j)] = max(aux);
